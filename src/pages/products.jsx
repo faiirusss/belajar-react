@@ -1,6 +1,6 @@
 import Button from "../components/Elements/Button"
 import CardProduct from "../components/Fragments/CardProduct"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 const products = [
     {
@@ -20,7 +20,7 @@ const products = [
     {
         id: 3,
         name: "Bintang",
-        price: 10000000,
+        price: 1000000,
         image: "/images/animek.jpg",
         description: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Laudantium dicta dolorum animi? Corrupti maxime      labore odio optio eius debitis expedita totam! Itaque provident sapiente reprehenderit, quas neque tempore autem mollitia!`
     },
@@ -29,12 +29,34 @@ const products = [
 const email = localStorage.getItem("email")
 
 const ProductPage = () => {
-  const [cart, setCart] = useState([
-    {
-      id: 1,
-      qty: 1,
+  const [cart, setCart] = useState([])
+  const [totalPrice, setTotalPrice] = useState(0)
+
+  useEffect(() => {
+    setCart(JSON.parse(localStorage.getItem("cart")) || [])
+  }, [])
+  
+  useEffect(() => {
+    if (cart.length > 0) {
+      const sum = cart.reduce((acc, item) => {
+        const product = products.find((product) => product.id === item.id)
+        return acc + product.price * item.qty
+      }, 0)
+      setTotalPrice(sum)
+      localStorage.setItem("cart", JSON.stringify(cart))
     }
-  ])
+  }, [cart])
+
+  // useEffect(() => {
+  //   if (cart.length > 0) {
+  //     const sum = cart.reduce((acc, item) => {
+  //       const product = products.find((product) => product.id === item.id)
+  //       return acc + product.price * item.qty
+  //     },0)
+  //     setTotalPrice(sum)
+  //     localStorage.setItem("cart", JSON.stringify(cart))
+  //   }
+  // }, [cart])
 
   const handleLogout = () => {
     localStorage.removeItem("email")
@@ -43,9 +65,9 @@ const ProductPage = () => {
   }
 
   const handleAddToCart = (id) => {
-    if(cart.find(item => item.id === id)) {
+    if(cart.find((item) => item.id === id)) {
       setCart(
-        cart.map(item => item.id === id ? {...item, qty: item.qty + 1} : item)
+        cart.map((item) => item.id === id ? {...item, qty: item.qty + 1} : item)
       )
     } else {
       setCart([...cart, {id, qty: 1}])
@@ -113,7 +135,7 @@ const ProductPage = () => {
               </thead>
               <tbody>
               {cart.map((item) => {
-                const product = products.find((p) => p.id === item.id)
+                const product = products.find((product) => product.id === item.id)
                 return (
                   <tr key={item.id}>
                     <td>{product.name}</td>
@@ -123,6 +145,10 @@ const ProductPage = () => {
                   </tr>
                 )
               })}
+              <tr>
+                <td colSpan={3}><b>Total Price</b></td>
+                <td><b>{totalPrice.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}</b></td>
+              </tr>
             </tbody>                          
             </table>
           </div>          
