@@ -1,28 +1,28 @@
 import React from "react";
-import Button from "../Elements/Button";
+import { Link } from "react-router-dom";
 
 const ProductCard = (props) => {
   const { children } = props;
   return (
-    <div className="card max-w-64 ms-5 mx-3 my-3 overflow-hidden rounded bg-white text-slate-500 flex justify-between">
+    <div className="card max-w-64 ms-5 mx-3 my-3 overflow-hidden rounded bg-white text-slate-500 flex flex-column justify-between">
       {children}
     </div>
   );
 };
 
 const Header = (props) => {
-  const { url } = props;
+  const { url, id } = props;
   return (
-    <figure>
+    <Link to={`/product/${id}`}>
       <img src={url} alt="product" className="aspect-video w-full p-2" />
-    </figure>
+    </Link>
   );
 };
 
 const Body = (props) => {
   const { title, children, price } = props;
   return (
-    <div className="p-6">
+    <div className="p-6 h-full">
       <header className="mb-4">
         <h3 className="text-xl font-medium text-slate-700 line-clamp-2">
           {title}
@@ -38,7 +38,10 @@ const Footer = (props) => {
   const { handleAddToCart, id } = props;
   return (
     <div className="flex justify-end p-6 pt-0">
-      <button className="inline-flex h-10 w-full items-center justify-center gap-2 whitespace-nowrap rounded bg-emerald-500 px-5 text-sm font-medium tracking-wide text-white transition duration-300 hover:bg-emerald-600 focus:bg-emerald-700 focus-visible:outline-none disabled:cursor-not-allowed disabled:border-emerald-300 disabled:bg-emerald-300 disabled:shadow-none">
+      <button
+        className="inline-flex h-10 w-full items-center justify-center gap-2 whitespace-nowrap rounded bg-emerald-500 px-5 text-sm font-medium tracking-wide text-white transition duration-300 hover:bg-emerald-600 focus:bg-emerald-700 focus-visible:outline-none disabled:cursor-not-allowed disabled:border-emerald-300 disabled:bg-emerald-300 disabled:shadow-none"
+        onClick={() => handleAddToCart(id)}
+      >
         <span>Order now!</span>
       </button>
     </div>

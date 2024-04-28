@@ -1,43 +1,60 @@
-import { useEffect, useRef } from "react"
-import Button from "../Elements/Button"
-import InputForm from "../Elements/Input"
-
-
+import { useEffect, useRef, useState } from "react";
+import Button from "../Elements/Button";
+import InputForm from "../Elements/Input";
+import { login } from "../../services/auth.service";
 
 const FormLogin = () => {
-
+  const [loginFailed, setLoginFailed] = useState("");
   const handleLogin = (event) => {
-    event.preventDefault()
-    localStorage.setItem("email", event.target.email.value)
-    localStorage.setItem("password", event.target.password.value)
-    window.location.href = "/products"
-  }
+    event.preventDefault();
+    // localStorage.setItem("email", event.target.email.value);
+    // localStorage.setItem("password", event.target.password.value);
 
-  const emailRef = useRef(null)
+    const data = {
+      username: event.target.username.value,
+      password: event.target.password.value,
+    };
+    login(data, (status, res) => {
+      if (status) {
+        localStorage.setItem("token", res);
+        window.location.href = "/products";
+      } else {
+        setLoginFailed(res.response.data);
+        console.log(res.response.data);
+      }
+    });
+  };
+
+  const usernameRef = useRef(null);
 
   useEffect(() => {
-    emailRef.current.focus()
-  })
+    usernameRef.current.focus();
+  });
 
   return (
     <form onSubmit={handleLogin}>
-      <InputForm 
-        label="Email" 
-        type="email" 
-        name="email"                    
-        placeholder="example@gmail.com"
-        ref={emailRef}
+      <InputForm
+        label="Username"
+        type="text"
+        name="username"
+        placeholder="Jhon Doe"
+        ref={usernameRef}
       />
-      <InputForm 
-        label="Password" 
-        type="password" 
-        name="password" 
+      <InputForm
+        label="Password"
+        type="password"
+        name="password"
         placeholder="*****"
       />
 
-      <Button classname="bg-blue-600 w-full" type="submit">Login</Button>
+      <Button classname="bg-blue-600 w-full" type="submit">
+        Login
+      </Button>
+      {loginFailed && (
+        <p className="text-red-500 text-center mt-5">{loginFailed}</p>
+      )}
     </form>
-  )
-}
+  );
+};
 
-export default FormLogin
+export default FormLogin;

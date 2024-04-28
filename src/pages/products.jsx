@@ -2,13 +2,13 @@ import Button from "../components/Elements/Button";
 import { useEffect, useRef, useState } from "react";
 import { getProducts } from "../services/products";
 import ProductCard from "../components/Fragments/ProductCard";
-const email = localStorage.getItem("email");
+import { useLogin } from "../hooks/useLogin";
 
 const ProductPage = () => {
   const [cart, setCart] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
   const [products, setProducts] = useState([]);
-
+  const username = useLogin();
   useEffect(() => {
     setCart(JSON.parse(localStorage.getItem("cart")) || []);
   }, []);
@@ -49,8 +49,7 @@ const ProductPage = () => {
   }, [cart]);
 
   const handleLogout = () => {
-    localStorage.removeItem("email");
-    localStorage.removeItem("password");
+    localStorage.removeItem("token");
     window.location.href = "/login";
   };
 
@@ -93,7 +92,7 @@ const ProductPage = () => {
                 className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52"
               >
                 <li>
-                  <a className="justify-between my-3">{email}</a>
+                  <a className="justify-between my-3">{username}</a>
                 </li>
                 <li>
                   <Button onClick={handleLogout}>Logout</Button>
@@ -110,7 +109,7 @@ const ProductPage = () => {
           {products.length > 0 &&
             products.map((product) => (
               <ProductCard key={product.id}>
-                <ProductCard.Header url={product.image} />
+                <ProductCard.Header url={product.image} id={product.id} />
                 <ProductCard.Body title={product.title} price={product.price}>
                   {product.rating["rate"]}
                 </ProductCard.Body>
