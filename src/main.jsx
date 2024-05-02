@@ -9,13 +9,13 @@ import ProductPage from "./pages/products.jsx";
 import ProfilePage from "./pages/profile.jsx";
 import DetailProductPage from "./pages/detailProduct.jsx";
 import DarkModeContextProvider from "./context/DarkMode.jsx";
+import WelcomePage from "./pages/welcome.jsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <div>Hello world!</div>,
-    errorElement: <ErrorPage />,
-  },
+    element: <WelcomePage />,
+  },  
   {
     path: "/login",
     element: <LoginPage />,

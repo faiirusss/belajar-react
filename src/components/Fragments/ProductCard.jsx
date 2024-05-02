@@ -3,18 +3,21 @@ import { Link } from "react-router-dom";
 
 const ProductCard = (props) => {
   const { children } = props;
-  return (
-    <div className="card max-w-64 ms-5 mx-3 my-3 overflow-hidden rounded bg-white text-slate-500 flex flex-column justify-between">
-      {children}
-    </div>
-  );
+  return <div>{children}</div>;
 };
 
 const Header = (props) => {
   const { url, id } = props;
   return (
-    <Link to={`/product/${id}`}>
-      <img src={url} alt="product" className="aspect-video w-full p-2" />
+    <Link
+      to={`/product/${id}`}
+      className="block rounded-lg p-4 shadow-sm shadow-indigo-100"
+    >
+      <img
+        src={url}
+        alt="product"
+        className="h-56 w-full rounded-md object-cover"
+      />
     </Link>
   );
 };
