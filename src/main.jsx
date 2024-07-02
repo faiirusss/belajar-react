@@ -10,12 +10,13 @@ import ProfilePage from "./pages/profile.jsx";
 import DetailProductPage from "./pages/detailProduct.jsx";
 import DarkModeContextProvider from "./context/DarkMode.jsx";
 import WelcomePage from "./pages/welcome.jsx";
+import Wishlist from "./pages/wishlist.jsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <WelcomePage />,
-  },  
+  },
   {
     path: "/login",
     element: <LoginPage />,
@@ -27,6 +28,10 @@ const router = createBrowserRouter([
   {
     path: "/products",
     element: <ProductPage />,
+  },
+  {
+    path: "/wishlist",
+    element: <Wishlist />,
   },
   {
     path: "/profile",
